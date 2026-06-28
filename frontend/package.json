@@ -17,6 +17,7 @@
     "react-dom": "^19.2.7",
     "react-infinite-scroll-component": "^7.2.1",
     "react-router-dom": "^7.18.0",
+    "react-virtualized-auto-sizer": "^2.0.3",
     "react-window": "^2.2.7"
   },
   "devDependencies": {

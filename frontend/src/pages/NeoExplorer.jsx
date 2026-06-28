@@ -1,16 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import { getNeo, createFavorite } from '../services/api';
 import { Heart, ShieldAlert, ShieldCheck } from 'lucide-react';
 
 export default function NeoExplorer() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const today = new Date();
   const nextWeek = new Date(today);
   nextWeek.setDate(today.getDate() + 7);
 
-  const [startDate, setStartDate] = useState(today.toISOString().split('T')[0]);
-  const [endDate, setEndDate] = useState(nextWeek.toISOString().split('T')[0]);
-  const [minDiameter, setMinDiameter] = useState('');
+  const startDate = searchParams.get('startDate') || today.toISOString().split('T')[0];
+  const endDate = searchParams.get('endDate') || nextWeek.toISOString().split('T')[0];
+  const minDiameter = searchParams.get('minDiameter') || '';
+
+  const updateParams = (key, value) => {
+    const newParams = new URLSearchParams(searchParams);
+    if (value) {
+      newParams.set(key, value);
+    } else {
+      newParams.delete(key);
+    }
+    setSearchParams(newParams);
+  };
 
   const { data: neoRes, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['neo', startDate, endDate, minDiameter],
@@ -44,17 +57,17 @@ export default function NeoExplorer() {
         <div className="flex flex-wrap gap-4 items-end bg-[#1e293b] p-4 rounded-lg border border-gray-800">
           <div className="flex flex-col gap-1">
             <label className="text-xs text-slate-400 font-semibold uppercase">Start Date</label>
-            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="bg-slate-800 border border-slate-700 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500" />
+            <input type="date" value={startDate} onChange={e => updateParams('startDate', e.target.value)} className="bg-slate-800 border border-slate-700 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500" />
           </div>
           
           <div className="flex flex-col gap-1">
             <label className="text-xs text-slate-400 font-semibold uppercase">End Date (Max 7 days)</label>
-            <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="bg-slate-800 border border-slate-700 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500" />
+            <input type="date" value={endDate} onChange={e => updateParams('endDate', e.target.value)} className="bg-slate-800 border border-slate-700 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500" />
           </div>
 
           <div className="flex flex-col gap-1">
             <label className="text-xs text-slate-400 font-semibold uppercase">Min Diameter (meters)</label>
-            <input type="number" value={minDiameter} onChange={e => setMinDiameter(e.target.value)} placeholder="e.g. 100" className="bg-slate-800 border border-slate-700 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500 w-32" />
+            <input type="number" value={minDiameter} onChange={e => updateParams('minDiameter', e.target.value)} placeholder="e.g. 100" className="bg-slate-800 border border-slate-700 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500 w-32" />
           </div>
         </div>
       </header>
