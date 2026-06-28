@@ -2,8 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { getMarsPhotos, createFavorite } from '../services/api';
-import { FixedSizeGrid as Grid } from 'react-window';
-import AutoSizer from 'react-virtualized-auto-sizer';
+import * as reactWindow from 'react-window';
+const Grid = reactWindow.FixedSizeGrid || reactWindow.default?.FixedSizeGrid || reactWindow;
+import * as autoSizerModule from 'react-virtualized-auto-sizer';
+const AutoSizer = autoSizerModule.default || autoSizerModule;
 import { Heart, Loader } from 'lucide-react';
 
 export default function MarsExplorer() {
