@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  title: Space Explorer Dashboard API
+  version: 1.0.0
+  description: API documentation for Space Explorer Dashboard backend
+paths:
+  /api/apod:
+    get:
+      summary: Get Astronomy Picture of the Day
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+          required: false
+          description: Date for APOD (YYYY-MM-DD)
+      responses:
+        '200':
+          description: Successful response
+  /api/mars:
+    get:
+      summary: Get Mars Rover Photos
+      parameters:
+        - in: query
+          name: rover
+          schema:
+            type: string
+          required: false
+          description: Rover name (curiosity, opportunity, spirit)
+        - in: query
+          name: sol
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: earth_date
+          schema:
+            type: string
+            format: date
+          required: false
+      responses:
+        '200':
+          description: Successful response
+  /api/neo:
+    get:
+      summary: Get Near Earth Objects
+      parameters:
+        - in: query
+          name: start_date
+          schema:
+            type: string
+            format: date
+          required: false
+        - in: query
+          name: end_date
+          schema:
+            type: string
+            format: date
+          required: false
+      responses:
+        '200':
+          description: Successful response
+  /api/favorites:
+    get:
+      summary: Get all favorites
+      responses:
+        '200':
+          description: Successful response
+    post:
+      summary: Create a favorite
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                type:
+                  type: string
+      responses:
+        '201':
+          description: Created successfully
