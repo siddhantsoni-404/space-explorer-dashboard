@@ -2,8 +2,6 @@
 
 This repository contains the backend and frontend for the Space Explorer Dashboard, integrating with NASA's APOD, Mars Rover, and NEO APIs.
 
-It was built as part of the Interim Recruitment Task for the Operations Committee.
-
 ## Architecture Note
 
 The project is structured into two main applications:
